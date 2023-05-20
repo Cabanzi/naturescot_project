@@ -1,0 +1,142 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(readxl)
+library(rgeos)  
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(leaflet)
+library(osrm)
+```
+# Data
+
+```{r}
+project_sites <- read_csv("raw_data/Peatland Action - Data - Project sites - CSV.csv") %>% 
+  clean_names()
+
+vegetation_surveys <- read_xlsx("raw_data/Peatland Action - Vegetation surveys spreadsheet.xlsx") 
+
+
+
+
+```
+```{r}
+glimpse(vegetation_surveys)
+```
+```{r}
+vegetation_surveys_clean <- vegetation_surveys %>% 
+  select(datasetname, scientificname, eventdate, recordedby, gridreference, locationid, locality, lifestage, vitality, organismquantity)
+```
+
+```{r}
+vegetation_surveys_clean %>% 
+  distinct(locality)
+```
+
+```{r}
+vegetation_surveys_clean %>% 
+  filter(locality == "Flanders_Moss") %>% 
+  count(gridreference) %>% 
+  arrange(desc(n))
+
+```
+
+## Vegetation map 
+
+```{r}
+vegetation_surveys_clean %>% 
+  distinct(locality)
+```
+
+Black_Moss_Aberdeenshire		57.100822 , -2.8975255
+Glenmullie				          57.253550 , -3.3079410
+Moine_Mhor			            56.082308 , -5.4820551
+Luss			                  56.054291 , -4.6893818    
+Airds_Moss	                55.512510 , -4.1628913			
+Barlosh_Moss				        55.437308 , -4.3875789
+Arran				                55.586594 , -5.2174772      
+Drumrunie				            58.024408 , -5.0791521
+Dundreggan	                57.194556 , -4.8486625       			
+Edinglassie	                57.401459 , -3.0539578      			
+Flanders_Moss				        56.151909 , -4.2126830   
+Carsegowan				          54.900584 , -4.4528137
+Glen_Ey				              56.917052 , -3.5600551
+Black_Moss_West_Lothian			55.893051 , -3.7134999
+Dunruchan_Farm			        56.301615 , -3.9397783
+Portmoak_Moss               56.198664 , -3.3257247 
+
+
+ * Not in Quadrat Survey
+ 
+```{r}
+# Add latitude and longitude columns
+vegetation_surveys_map <- vegetation_surveys_clean %>%
+  mutate(latitude = NA, longitude = NA)
+
+# Update latitude and longitude values
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Black_Moss_Aberdeenshire"] <- 57.100822
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Black_Moss_Aberdeenshire"] <- -2.8975255
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Glenmullie"] <- 57.253550
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Glenmullie"] <- -3.3079410
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Moine_Mhor"] <- 56.082308
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Moine_Mhor"] <- -5.4820551
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Luss"] <- 56.054291
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Luss"] <- -4.6893818
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Airds_Moss"] <- 55.512510
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Airds_Moss"] <- -4.1628913
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Barlosh_Moss"] <- 55.437308
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Barlosh_Moss"] <- -4.3875789
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Arran"] <- 55.586594
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Arran"] <- -5.2174772
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Drumrunie"] <- 58.024408
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Drumrunie"] <- -5.0791521
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Dundreggan"] <- 57.194556
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Dundreggan"] <- -4.8486625
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Edinglassie"] <- 57.401459
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Edinglassie"] <- -3.0539578
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Flanders_Moss"] <- 56.151909
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Flanders_Moss"] <- -4.2126830
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Carsegowan"] <- 54.900584
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Carsegowan"] <- -4.4528137
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Glen_Ey"] <- 56.917052
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Glen_Ey"] <- -3.5600551
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Black_Moss_West_Lothian"] <- 55.893051  
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Black_Moss_West_Lothian"] <- -3.7134999
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Dunruchan_Farm"] <- 56.301615  
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Dunruchan_Farm"] <- -3.9397783
+
+vegetation_surveys_map$latitude[vegetation_surveys_map$locality == "Portmoak_Moss"] <- 56.198664
+vegetation_surveys_map$longitude[vegetation_surveys_map$locality == "Portmoak_Moss"] <- -3.3257247 
+```
+ 
+```{r}
+vegetation_surveys_map%>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addCircleMarkers(
+      lng = ~longitude,
+      lat = ~latitude,
+      clusterOptions = markerClusterOptions()
+      )
+```
+ 
