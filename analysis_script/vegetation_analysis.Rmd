@@ -140,3 +140,19 @@ vegetation_surveys_map%>%
       )
 ```
  
+```{r}
+vegetation_surveys_map %>% 
+  names()
+```
+ 
+```{r}
+  colnames(vegetation_surveys_map) <- c("dataset_name", "scientific_name","event_date", "recorded_by", "grid_reference", "location_id", "locality", "life_stage", "vitality", "organism_quantity", "latitude", "longitude")
+```
+
+```{r}
+vegetation_surveys_map %>% 
+  filter(locality == "Dunruchan_Farm",
+         dataset_name == "Quadrat Survey Peatland Monitoring Dataset") %>% 
+  distinct(life_stage)
+```
+
