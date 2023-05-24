@@ -9,32 +9,43 @@ ui <- fluidPage(
     # About tab
     tabPanel("About",
              h2("Why are these data collected?"),
-             p("The effectiveness of Peatland Action restoration activities was assessed by monitoring vegetation and other environmental variables. 
-               These surveys were carried out on Peatland Action sites in 2014 and 2015 to amass a baseline dataset, and again in 2021 to investigate the changes in the intervening period. 
-               Sites were selected to include raised bog and blanket bog, and encompassed a range of bog vegetation types and restoration approaches."),
+             p("The effectiveness of Peatland Action restoration activities was assessed by monitoring 
+               vegetation and other environmental variables. 
+               These surveys were carried out on Peatland Action sites in 2014 and 2015 to amass a baseline 
+               dataset, and again in 2021 to investigate the changes in the intervening period. 
+               Sites were selected to include raised bog and blanket bog, and encompassed a range of bog 
+               vegetation types and restoration approaches."),
              h2("How much data is there?"),
-             p("A total of 1,002 quadrats on 16 sites were surveyed for the baseline survey, and 873 quadrats on 13 sites were surveyed in the repeat survey. 
-               The sample areas included restored areas, unrestored control areas and unmodified reference areas. The raw datasets can be downloaded from the report appendices. 
-               Appendix 2B in the repeat survey (2021) contains the data from both surveys with one row per replicate (quadrat). 
+             p("A total of 1,002 quadrats on 16 sites were surveyed for the baseline survey, 
+               and 873 quadrats on 13 sites were surveyed in the repeat survey. 
+               The sample areas included restored areas, unrestored control areas and unmodified 
+               reference areas. The raw datasets can be downloaded from the report appendices. 
+               Appendix 2B in the repeat survey (2021) contains the data from both surveys with one row per 
+               replicate (quadrat). 
                The simplified raw data from both surveys is formatted as one row per record."),
              h2("Who is this data for"),
-             p("Peatland ACTION Project Officers - viewing and accessing site specific data to understand the effect of restoration works.
+             p("Peatland ACTION Project Officers - viewing and accessing site specific data to understand 
+               the effect of restoration works.
                
                Landowners - out of interest looking at their sites. 
                
-               Volunteers/groups - viewing site specific data to understand the effect of restoration works and out of interest looking at their sites.
+               Volunteers/groups - viewing site specific data to understand the effect of restoration 
+               works and out of interest looking at their sites.
                
                Researchers - access to the data to support their own projects. 
                
-               NatureScot staff (e.g. reserve manager, wetland advisor) - viewing and accessing site specific data to understand the effect of restoration works."),
+               NatureScot staff (e.g. reserve manager, wetland advisor) - viewing and accessing site 
+               specific data to understand the effect of restoration works."),
              h2("When was the data last updates?"),
              p("Last update - 06 October 2021
                
                Next planned update - TBC"),
              h2("Contact us"),
-             p("If you spot anything that doesn't look right or have any queries please contact the Peatland ACTION Data and Evidence Team peatlandactiondata@nature.scot."),
+             p("If you spot anything that doesn't look right or have any queries please contact 
+               the Peatland ACTION Data and Evidence Team peatlandactiondata@nature.scot."),
              h2("More information and datasets"),
-             p("Visit Peatland ACTION for more information on our programme of restoration, and our open data page for more datasets collected as part of this programme.
+             p("Visit Peatland ACTION for more information on our programme of restoration, 
+               and our open data page for more datasets collected as part of this programme.
                Visit Scotland's Soils for more information, maps and data on Scotland's peatlands.")
              
     ),
