@@ -52,6 +52,8 @@ ui <- fluidPage(
     
     # Data tab
     tabPanel("Data",
+             leafletOutput("map"),
+             
              selectInput('locality_input',
                          'Choose a site:',
                          choices = unique(vegetation_surveys_map$locality)), 
@@ -84,6 +86,20 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  output$map <- renderLeaflet({
+    
+    vegetation_surveys_map %>% 
+      filter(locality == input$locality_input) %>% 
+      leaflet() %>% 
+      addTiles() %>% 
+      addCircleMarkers(
+        lat = ~latitude, 
+        lng = ~longitude,
+        clusterOptions = markerClusterOptions()
+      )
+    
+  })
+  
   
   filtered_data <- eventReactive(eventExpr = input$update,
                                  valueExpr = {
@@ -96,7 +112,8 @@ server <- function(input, output) {
                                  })
   
   output$table_output <- DT::renderDataTable({
-    filtered_data()
+   DT::datatable(filtered_data(), 
+             colnames = c("Scientific Name" = "scientific_name" ,"Event Date" = "event_date"))
   })
 }
 
