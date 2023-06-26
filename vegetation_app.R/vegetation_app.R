@@ -2,6 +2,7 @@
 library(tidyverse)
 library(shiny)
 library(leaflet)
+library(DT)
 
 # Load data
 vegetation_surveys <- read_csv(here::here("data/clean_data/vegetation_surveys.csv"))
@@ -69,7 +70,7 @@ ui <- fluidPage(
              actionButton(inputId = 'update', 
                           label = 'Update dashboard?'),
              
-             DT::dataTableOutput('table_output')
+             dataTableOutput('table_output')
     ),
     
     # Accessibility tab
