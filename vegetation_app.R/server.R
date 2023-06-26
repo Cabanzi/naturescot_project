@@ -1,34 +1,31 @@
 server <- function(input, output) {
   
   output$map <- renderLeaflet({
-    
-    vegetation_surveys %>% 
-      filter(locality == input$locality_input) %>% 
-      leaflet() %>% 
-      addTiles() %>% 
+    vegetation_surveys %>%
+      filter(locality == input$locality_input) %>%
+      leaflet() %>%
+      addTiles() %>%
       addCircleMarkers(
-        lat = ~latitude, 
+        lat = ~latitude,
         lng = ~longitude,
-        clusterOptions = markerClusterOptions(), 
-        popup = 
+        clusterOptions = markerClusterOptions(),
+        popup = ~paste("Scientific Name:", scientific_name)
       )
-    
   })
-  
   
   filtered_data <- eventReactive(eventExpr = input$update,
                                  valueExpr = {
-                                   vegetation_surveys %>% 
+                                   vegetation_surveys %>%
                                      filter(locality == input$locality_input,
-                                            dataset_name == input$dataset_input) %>% 
+                                            dataset_name == input$dataset_input) %>%
                                      select(scientific_name, vitality, life_stage,
                                             organism_quantity, grid_reference,
                                             event_date, recorded_by)
                                  })
   
-  output$table_output <- DT::renderDataTable({
-    DT::datatable(filtered_data(), 
-                  colnames = c("Scientific Name" = "scientific_name" ,"Event Date" = "event_date"))
+  output$table_output <- renderDataTable({
+    datatable(filtered_data(),
+              colnames = c("Scientific Name" = "scientific_name", "Event Date" = "event_date"))
   })
 }
 

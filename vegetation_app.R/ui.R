@@ -1,3 +1,6 @@
+library(shiny)
+library(leaflet)
+
 ui <- fluidPage(
   navbarPage(
     title = "Peatland Action - Vegetation Survey Results",
@@ -52,16 +55,16 @@ ui <- fluidPage(
              
              selectInput('locality_input',
                          'Choose a site:',
-                         choices = unique(vegetation_surveys$locality)), 
+                         choices = locality_choices),
              
              selectInput('dataset_input',
                          'Select dataset:',
-                         choices = unique(vegetation_surveys$dataset_name)),
+                         choices = dataset_choices),
              
-             actionButton(inputId = 'update', 
+             actionButton(inputId = 'update',
                           label = 'Update dashboard?'),
              
-             DT::dataTableOutput('table_output')
+             dataTableOutput('table_output')
     ),
     
     # Accessibility tab
@@ -79,3 +82,4 @@ ui <- fluidPage(
     )
   )
 )
+
