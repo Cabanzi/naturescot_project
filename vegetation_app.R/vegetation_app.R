@@ -1,5 +1,7 @@
+# App Library 
 library(tidyverse)
 library(shiny)
+library(leaflet)
 
 
 ui <- fluidPage(
@@ -56,11 +58,11 @@ ui <- fluidPage(
              
              selectInput('locality_input',
                          'Choose a site:',
-                         choices = unique(vegetation_surveys_map$locality)), 
+                         choices = unique(vegetation_surveys$locality)), 
              
              selectInput('dataset_input',
                          'Select dataset:',
-                         choices = unique(vegetation_surveys_map$dataset_name)),
+                         choices = unique(vegetation_surveys$dataset_name)),
              
              actionButton(inputId = 'update', 
                           label = 'Update dashboard?'),
@@ -84,37 +86,3 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output) {
-  
-  output$map <- renderLeaflet({
-    
-    vegetation_surveys_map %>% 
-      filter(locality == input$locality_input) %>% 
-      leaflet() %>% 
-      addTiles() %>% 
-      addCircleMarkers(
-        lat = ~latitude, 
-        lng = ~longitude,
-        clusterOptions = markerClusterOptions()
-      )
-    
-  })
-  
-  
-  filtered_data <- eventReactive(eventExpr = input$update,
-                                 valueExpr = {
-                                   vegetation_surveys_map %>% 
-                                     filter(locality == input$locality_input,
-                                            dataset_name == input$dataset_input) %>% 
-                                     select(scientific_name, vitality, life_stage,
-                                            organism_quantity, grid_reference,
-                                            event_date, recorded_by)
-                                 })
-  
-  output$table_output <- DT::renderDataTable({
-   DT::datatable(filtered_data(), 
-             colnames = c("Scientific Name" = "scientific_name" ,"Event Date" = "event_date"))
-  })
-}
-
-shinyApp(ui = ui, server = server)
